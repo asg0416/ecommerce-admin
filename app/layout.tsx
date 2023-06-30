@@ -1,5 +1,7 @@
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { koKR } from "@clerk/localizations";
+
 
 import ModalProvider from "@/providers/ModalProvider";
 
@@ -18,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider localization={koKR}>
       <html lang="en">
         <body className={inter.className}>
           <ModalProvider />

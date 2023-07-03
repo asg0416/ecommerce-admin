@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const formSchema = zod.object({
   name: zod.string().min(1),
@@ -23,6 +24,7 @@ const formSchema = zod.object({
 
 const StoreModal = () => {
   const { isOpen, onClose } = useStoreModal();
+  const [loading, setLoading] = useState(false);
 
   // form의 타입을 interface로 다시 지정할 필요없이
   // zod의 infer과 js의 typeof를 이용하면 타입을 추출할수있다.
@@ -59,17 +61,23 @@ const StoreModal = () => {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="E-Commerce" {...field} />
+                      <Input
+                        disabled={loading}
+                        placeholder="E-Commerce"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <div className=" pt-6 space-x-2 flex items-center justify-end">
-                <Button variant="outline" onClick={onClose}>
+                <Button disabled={loading} variant="outline" onClick={onClose}>
                   Cancel
                 </Button>
-                <Button type="submit">Continue</Button>
+                <Button disabled={loading} type="submit">
+                  Continue
+                </Button>
               </div>
             </form>
           </Form>

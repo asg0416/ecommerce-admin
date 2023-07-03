@@ -11,6 +11,17 @@ datasource db {
   relationMode = "prisma"
 }
 
+// model : DB의 테이블을 정의
+// Store : DB 테이블을 나타내는 모델명
+// 각 속성 : 각 컬럼
+// @ ~ : 프리즈마 고유 속성으로 해당 컬럼의 특성 정의
+// @id : primary key
+// @default : 자동 생성 컬럼의 기본값 설정 속성
+// @updatedAt : 자동으로 업데이트 시간을 갱신
+
+// 아래 Store 테이블 속성 중 실제로 값이 필요한 컬럼은 name, userId 뿐.
+// userId 는 clerk auth 속성값으로 가져오고
+// name 은 생성할 스토어명으로 input 값으로 받아옴.
 model Store {
   id        String   @id @default(uuid())
   name      String

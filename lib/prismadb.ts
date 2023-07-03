@@ -1,3 +1,5 @@
+// 실제 DB와 작용하는 CRUD 작업을 위한 prisma client 객체 생성 정의 파일
+
 import { PrismaClient } from "@prisma/client";
 
 // declare global 키워드를 사용하여 전역 스코프 변수 타입 선언

@@ -2,10 +2,8 @@ import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { koKR } from "@clerk/localizations";
 
-
-import ModalProvider from "@/providers/ModalProvider";
-
 import "./globals.css";
+import { ModalProvider, ToastProvider } from "@/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,11 +17,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <ClerkProvider localization={koKR}>
       <html lang="en">
         <body className={inter.className}>
+          <ToastProvider />
           <ModalProvider />
           {children}
         </body>

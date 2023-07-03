@@ -1,6 +1,8 @@
 "use client";
 
 import * as zod from "zod";
+import { useState } from "react";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -16,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 const formSchema = zod.object({
   name: zod.string().min(1),
@@ -29,6 +31,7 @@ const StoreModal = () => {
   // form의 타입을 interface로 다시 지정할 필요없이
   // zod의 infer과 js의 typeof를 이용하면 타입을 추출할수있다.
   // resolver는 외부 유효성 검사를 위한 것.
+  // api/stores/route.ts 의 store create POST 의 body 값으로 들어감.
   const form = useForm<zod.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,9 +40,19 @@ const StoreModal = () => {
   });
 
   const onSubmitHandler = async (values: zod.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      setLoading(true);
 
-    // TODO: Create Store
+      const res = await axios.post("/api/stores", values);
+      console.log(res);
+
+      toast.success("Store created");
+    } catch (error) {
+      toast.error("Something went wrong!");
+      console.log("[store create submitHandler] - ", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

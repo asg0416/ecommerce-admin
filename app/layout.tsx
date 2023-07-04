@@ -1,11 +1,9 @@
-import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { koKR } from "@clerk/localizations";
 
 import "./globals.css";
 import { ModalProvider, ToastProvider } from "@/providers";
-
-const inter = Inter({ subsets: ["latin"] });
+import { inter } from "./styles/fonts";
 
 export const metadata = {
   title: "Admin Dashboard",
@@ -19,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider localization={koKR}>
-      <html lang="en">
+      <html lang="en" >
         <body className={inter.className}>
           <ToastProvider />
           <ModalProvider />

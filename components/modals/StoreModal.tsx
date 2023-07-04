@@ -46,7 +46,8 @@ const StoreModal = () => {
       const res = await axios.post("/api/stores", values);
       console.log(res);
 
-      toast.success("Store created");
+      // next router 사용하면 DB 연동등 싱크 안맞는 경우 있어서 그냥 완전 리로드시키려고 씀.
+      location.assign(`/${res.data.id}`)
     } catch (error) {
       toast.error("Something went wrong!");
       console.log("[store create submitHandler] - ", error);

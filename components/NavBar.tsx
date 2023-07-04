@@ -1,13 +1,12 @@
-import { UserButton, auth } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
 import MainNav from "@/components/MainNav";
 import StoreSwitcher from "@/components/StoreSwitcher";
-import { redirect } from "next/navigation";
 import prismadb from "@/lib/prismadb";
+import useUserCheck from "@/hooks/useUserCheck";
 
 // 재사용할 컴포넌트가 아니라서 ui 폴더 밖에 따로 만듦.
 const NavBar = async () => {
-  const { userId } = auth();
-  if (!userId) return redirect("/sign-in");
+  const userId = useUserCheck();
 
   const stores = await prismadb.store.findMany({ where: { userId } });
 

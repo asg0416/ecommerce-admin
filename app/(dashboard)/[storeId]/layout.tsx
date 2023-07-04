@@ -1,7 +1,7 @@
 import prismadb from "@/lib/prismadb";
-import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import NavBar from "@/components/NavBar";
+import useUserCheck from "@/hooks/useUserCheck";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -9,10 +9,7 @@ interface LayoutProps {
 }
 
 const DashboardLayout = async ({ children, params }: LayoutProps) => {
-  const { userId } = auth();
-
-  // 로그인 안된경우 로그인 리다이렉트
-  if (!userId) return redirect("/sign-in");
+  const userId = useUserCheck();
 
   const store = await prismadb.store.findFirst({
     where: {
@@ -26,7 +23,7 @@ const DashboardLayout = async ({ children, params }: LayoutProps) => {
 
   return (
     <div>
-      <NavBar/>
+      <NavBar />
       {children}
     </div>
   );

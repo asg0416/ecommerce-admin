@@ -13,12 +13,6 @@ function SetupPage() {
   }, [isOpen, onOpen]);
 
   return null;
-  // return (
-  //   <div className="p-4">
-  //     Root page
-  //     <UserButton afterSignOutUrl="/" />
-  //   </div>
-  // );
 }
 
 export default SetupPage;

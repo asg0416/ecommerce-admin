@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
+// 사용자 로그인 여부 체크 훅
 const useUserCheck = () => {
   const { userId } = auth();
 

@@ -2,6 +2,7 @@ import prismadb from "@/lib/prismadb";
 import { redirect } from "next/navigation";
 import NavBar from "@/components/NavBar";
 import useUserCheck from "@/hooks/useUserCheck";
+import useStoreState from "@/hooks/useStoreState";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -9,17 +10,7 @@ interface LayoutProps {
 }
 
 const DashboardLayout = async ({ children, params }: LayoutProps) => {
-  const userId = useUserCheck();
-
-  const store = await prismadb.store.findFirst({
-    where: {
-      id: params.storeId,
-      userId,
-    },
-  });
-
-  // 주소창에 이상한 스토어 아이디 치고 접근 한 경우나 없는 스토어의 경우 스토어생성 루트 페이지로 보냄
-  if (!store) return redirect("/");
+  await useStoreState(params.storeId);
 
   return (
     <div>

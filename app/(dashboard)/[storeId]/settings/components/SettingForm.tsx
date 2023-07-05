@@ -1,12 +1,15 @@
 "use client";
 
 import * as zod from "zod";
+import { Fragment, useState } from "react";
 import { Store } from "@prisma/client";
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useParams, useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
-import { Fragment, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
@@ -32,6 +35,9 @@ const formSchema = zod.object({
 type SettingFormValues = zod.infer<typeof formSchema>;
 
 const SettingForm: React.FC<SettingFormProps> = ({ initialData }) => {
+  const params = useParams();
+  const router = useRouter();
+
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -40,8 +46,18 @@ const SettingForm: React.FC<SettingFormProps> = ({ initialData }) => {
     defaultValues: initialData,
   });
 
+  // 스토어명 수정 함수
   const onSubmitHandler = async (data: SettingFormValues) => {
-    console.log(data);
+    try {
+      setLoading(true);
+      await axios.patch(`/api/stores/${params.storeId}`, data);
+      router.refresh();
+      toast.success("Store updated.")
+    } catch (error) {
+      toast.error("Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

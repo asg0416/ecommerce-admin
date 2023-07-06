@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import AlertModal from "@/components/modals/AlertModal";
+import ApiAlert from "@/components/ui/apiAlert";
+import useOrigin from "@/hooks/useOrigin";
 
 interface SettingFormProps {
   initialData: Store;
@@ -38,6 +40,7 @@ type SettingFormValues = zod.infer<typeof formSchema>;
 const SettingForm: React.FC<SettingFormProps> = ({ initialData }) => {
   const params = useParams();
   const router = useRouter();
+  const origin = useOrigin();
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -125,6 +128,12 @@ const SettingForm: React.FC<SettingFormProps> = ({ initialData }) => {
           </Button>
         </form>
       </Form>
+      <Separator />
+      <ApiAlert
+        title="NEXT_PUBLIC_API_URL"
+        description={`${origin}/api/${params.storeId}`}
+        variant="public"
+      />
     </Fragment>
   );
 };

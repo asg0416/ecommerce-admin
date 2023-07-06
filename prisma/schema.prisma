@@ -23,9 +23,24 @@ datasource db {
 // userId 는 clerk auth 속성값으로 가져오고
 // name 은 생성할 스토어명으로 input 값으로 받아옴.
 model Store {
+  id         String      @id @default(uuid())
+  name       String
+  userId     String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  billboards Billboard[] @relation("StoreToBillboard")
+}
+
+// Billboard 모델은 storeId라는 foreign key를 가지며, 'store' 관계를 통해 'Store' 테이블과 연결되어있음
+// @relation 속성으로 세부 관계 지정, 'fields'로 현재 테이블의 외래 키 컬럼 설정, 'references'로 연결되는 테이블의 기본 키 컬럼 설정
+model Billboard {
   id        String   @id @default(uuid())
-  name      String
-  userId    String
+  storeId   String
+  store     Store    @relation("StoreToBillboard", fields: [storeId], references: [id])
+  label     String
+  imageUrl  String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt()
+
+  @@index([storeId])
 }

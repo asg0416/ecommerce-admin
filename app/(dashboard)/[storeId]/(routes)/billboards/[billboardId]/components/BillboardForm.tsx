@@ -57,12 +57,15 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
     defaultValues: initialData || { label: "", imageUrl: "" },
   });
 
-  // 스토어명 수정 함수
+  // billboard 생성, 수정 함수
   const onSubmitHandler = async (data: BillboardFormValues) => {
     try {
       setLoading(true);
       if (initialData) {
-        await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
+        await axios.patch(
+          `/api/${params.storeId}/billboards/${params.billboardId}`,
+          data
+        );
       } else {
         await axios.post(`/api/${params.storeId}/billboards`, data);
       }
@@ -78,12 +81,16 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
   const onDeleteHandler = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
+      await axios.delete(
+        `/api/${params.storeId}/billboards/${params.billboardId}`
+      );
       router.refresh();
       router.push("/");
       toast.success("Billboard deleted");
     } catch (error) {
-      toast.error("Make sure you removed all categories using this billboard first.");
+      toast.error(
+        "Make sure you removed all categories using this billboard first."
+      );
     } finally {
       setLoading(false);
       setOpen(false);

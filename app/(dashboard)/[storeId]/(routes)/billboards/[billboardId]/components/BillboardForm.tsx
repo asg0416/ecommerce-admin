@@ -23,8 +23,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import AlertModal from "@/components/modals/AlertModal";
-import ApiAlert from "@/components/ui/apiAlert";
-import useOrigin from "@/hooks/useOrigin";
 import ImageUpload from "@/components/ui/imageUpload";
 
 interface BillboardFormProps {
@@ -42,7 +40,6 @@ type BillboardFormValues = zod.infer<typeof formSchema>;
 const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
   const params = useParams();
   const router = useRouter();
-  const origin = useOrigin();
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -70,6 +67,7 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
         await axios.post(`/api/${params.storeId}/billboards`, data);
       }
       router.refresh();
+      router.push(`/${params.storeId}/billboards`)
       toast.success(toastMsg);
     } catch (error) {
       toast.error("Something went wrong.");
@@ -85,7 +83,7 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
         `/api/${params.storeId}/billboards/${params.billboardId}`
       );
       router.refresh();
-      router.push("/");
+      router.push(`/${params.storeId}/billboards`)
       toast.success("Billboard deleted");
     } catch (error) {
       toast.error(

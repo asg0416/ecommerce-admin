@@ -1,6 +1,6 @@
 import prismadb from "@/lib/prismadb";
 import { NextResponse } from "next/server";
-import { ReturnType, billboardValidator } from "../requestValidators";
+import { billboardValidator } from "../requestValidators";
 
 interface Params {
   storeId: string;
@@ -47,7 +47,7 @@ export async function PATCH(req: Request, { params }: { params: Params }) {
 
     if (res instanceof NextResponse) {
       return res;
-    } else {
+    } else if (res !== undefined) {
       const {
         body: { label, imageUrl },
       } = res;

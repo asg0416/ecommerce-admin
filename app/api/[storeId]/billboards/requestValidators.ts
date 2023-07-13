@@ -16,19 +16,11 @@ export interface ReturnType {
 export async function billboardValidator(
   req: Request,
   params: { storeId: string; billboardId?: string }
-): Promise<NextResponse | ReturnType> {
+): Promise<NextResponse | ReturnType | undefined> {
   const { userId } = auth();
-  const body = await req.json();
-  const { label, imageUrl } = body;
 
   // 로그인 체크
   if (!userId) return new NextResponse("Unauthenticated", { status: 401 });
-
-  // 등록, 수정 요청일때, 데이터 body 속성체크
-  if (req.method !== "DELETE" && !label)
-    return new NextResponse("Label is required", { status: 400 });
-  if (req.method !== "DELETE" && !imageUrl)
-    return new NextResponse("Image Url is required", { status: 400 });
 
   // 수정, 삭제 요청일때 billboard id 체크
   if (req.method !== "POST" && !params.billboardId) {
@@ -48,5 +40,15 @@ export async function billboardValidator(
   });
   if (!storeByUserId) return new NextResponse("Unauthorized", { status: 403 });
 
-  return { body, params };
+  if (req.method !== "DELETE") {
+    const body = await req.json();
+    const { label, imageUrl } = body;
+
+    // 등록, 수정 요청일때, 데이터 body 속성체크
+    if (!label) return new NextResponse("Label is required", { status: 400 });
+    if (!imageUrl)
+      return new NextResponse("Image Url is required", { status: 400 });
+
+    return { body, params };
+  }
 }

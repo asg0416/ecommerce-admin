@@ -1,6 +1,6 @@
 import prismadb from "@/lib/prismadb";
 import { NextResponse } from "next/server";
-import { ReturnType, billboardValidator } from "./requestValidators";
+import { billboardValidator } from "./requestValidators";
 
 /**
  * billboard 생성 api
@@ -18,10 +18,10 @@ export async function POST(
 
     if (res instanceof NextResponse) {
       return res;
-    } else {
+    } else if (res !== undefined) {
       const {
         body: { label, imageUrl },
-      } = (await billboardValidator(req, params)) as ReturnType;
+      } = res;
 
       const billboard = await prismadb.billboard.create({
         data: { label, imageUrl, storeId: params.storeId },

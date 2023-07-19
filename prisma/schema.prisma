@@ -31,6 +31,7 @@ model Store {
   billboards Billboard[] @relation("StoreToBillboard")
   categories Category[]  @relation("StoreToCategory")
   sizes      Size[]      @relation("StoreToSize")
+  colors     Color[]     @relation("StoreToColor")
 }
 
 // Billboard 모델은 storeId라는 foreign key를 가지며, 'store' 관계를 통해 'Store' 테이블과 연결되어있음
@@ -70,6 +71,18 @@ model Size {
   value     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
-  
+
+  @@index([storeId])
+}
+
+model Color {
+  id        String   @id @default(uuid())
+  storeId   String
+  store     Store    @relation("StoreToColor", fields: [storeId], references: [id])
+  name      String
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
   @@index([storeId])
 }

@@ -30,7 +30,7 @@ export async function POST(
       return NextResponse.json(category);
     }
   } catch (error) {
-    console.log("[CATEGORIES_POST]", error);
+    console.log("[CATEGORY_POST]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }

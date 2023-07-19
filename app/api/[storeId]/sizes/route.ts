@@ -1,46 +1,46 @@
 import prismadb from "@/lib/prismadb";
 import { NextResponse } from "next/server";
-import { billboardValidator } from "./requestValidators";
+import { sizeValidator } from "./requestValidators";
 
 /**
- * billboard 생성 api
+ * size 생성 api
  *
  * @param req
  * @param params 주소 파람값
- * @returns 생성된 단일 billboard 객체 포함 응답
+ * @returns 생성된 단일 size 객체 포함 응답
  */
 export async function POST(
   req: Request,
   { params }: { params: { storeId: string } }
 ) {
   try {
-    const res = await billboardValidator(req, params);
+    const res = await sizeValidator(req, params);
 
     if (res instanceof NextResponse) {
       return res;
     } else if (res !== undefined) {
       const {
-        body: { label, imageUrl },
+        body: { name, value },
       } = res;
 
-      const billboard = await prismadb.billboard.create({
-        data: { label, imageUrl, storeId: params.storeId },
+      const size = await prismadb.size.create({
+        data: { name, value, storeId: params.storeId },
       });
 
-      return NextResponse.json(billboard);
+      return NextResponse.json(size);
     }
   } catch (error) {
-    console.log("[BILLBOARD_POST]", error);
+    console.log("[SIZES_POST]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
 
 /**
- * billboard 읽기 api
+ * size 읽기 api
  *
  * @param req
  * @param params 주소 파람값
- * @returns 스토어 하위 전체 billboards 객체 포함 응답
+ * @returns 스토어 하위 전체 sizes 객체 포함 응답
  */
 export async function GET(
   req: Request,
@@ -50,15 +50,15 @@ export async function GET(
     if (!params.storeId)
       return new NextResponse("Store id is required", { status: 400 });
 
-    const billboards = await prismadb.billboard.findMany({
+    const sizes = await prismadb.size.findMany({
       where: {
         storeId: params.storeId,
       },
     });
 
-    return NextResponse.json(billboards);
+    return NextResponse.json(sizes);
   } catch (error) {
-    console.log("[BILLBOARDS_GET]", error);
+    console.log("[SIZES_GET]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }

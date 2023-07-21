@@ -30,6 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import SelectForm from "@/app/(dashboard)/[storeId]/(routes)/products/[productId]/components/selectForm";
 
 interface CategoryFormProps {
   initialData: Category | null;
@@ -159,13 +160,13 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
                   <Select
                     disabled={loading}
                     onValueChange={field.onChange}
-                    value={field.value || undefined}
-                    defaultValue={field.value || undefined}
+                    value={String(field.value) || undefined}
+                    defaultValue={String(field.value) || undefined}
                   >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue
-                          defaultValue={field.value || undefined}
+                          defaultValue={String(field.value) || undefined}
                           placeholder="Select a billboard"
                         />
                       </SelectTrigger>
